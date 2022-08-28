@@ -12,4 +12,4 @@ FROM alpine:3.15
 COPY --from=builder /build/main ./generator
 
 # executable
-ENTRYPOINT [ "./generator -concurrent 10 -sleepus 500 -msg 'This is a sample log message to simulate application log from Snocko applications'" ]
+ENTRYPOINT [ "./generator", "-concurrent 10", "-sleepus 500", "-msg 'This is a sample log message to simulate application log from Snocko applications'" ]
