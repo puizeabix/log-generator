@@ -1,7 +1,7 @@
 # builder image
 FROM golang:1.19.0-alpine3.15 as builder
 RUN mkdir /build
-ADD src /build/
+ADD . /build/
 WORKDIR /build
 RUN go mod tidy
 RUN CGO_ENABLED=0 GOOS=linux go build -a cmd/main.go
