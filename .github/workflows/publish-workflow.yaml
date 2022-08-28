@@ -1,0 +1,30 @@
+name: Build workflow
+
+on: 
+  release:
+    types:
+      - published
+    branches:
+      - main
+
+
+env:
+  DOCKER_REPO: ${{ secrets.DOCKER_REPO_NAME }}
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build docker image
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+      - name: Docker Login
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: Docker build
+        run: docker build . -t $DOCKER_USERNAME/$DOCKER_REPO:${{ steps.get_version.outputs.VERSION }}
+      - name: Docker push
+        run: docker push $DOCKER_USERNAME/$DOCKER_REPO:${{ steps.get_version.outputs.VERSION }}
