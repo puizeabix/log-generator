@@ -1,0 +1,15 @@
+name: Build workflow
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build docker image
+    steps:
+      - uses: actions/checkout@v3
+      - name: Docker build
+        run: docker build . -t ${{ github.repository }}:${{ github.sha }}
